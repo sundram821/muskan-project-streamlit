@@ -29,6 +29,7 @@ app = Flask(__name__,
 
 # Load Model Components
 print("\n[Loading Model Components...]")
+feature_names = None
 try:
     model = joblib.load(os.path.join(project_dir, 'model/mental_health_model.pkl'))
     scaler = joblib.load(os.path.join(project_dir, 'model/mental_health_model_scaler.pkl'))
