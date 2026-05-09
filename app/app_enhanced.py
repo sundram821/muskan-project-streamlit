@@ -19,6 +19,12 @@ sys.path.insert(0, project_dir)
 import joblib
 import pandas as pd
 
+try:
+    from waitress import serve
+    WAITRESS_AVAILABLE = True
+except ImportError:
+    WAITRESS_AVAILABLE = False
+
 # Import recommendation engine
 from utils.recommendation_engine import RecommendationEngine
 
@@ -455,4 +461,11 @@ if __name__ == '__main__':
     print(f"📱 Access at: http://127.0.0.1:5000")
     print(f"\n{'='*80}\n")
     
-    app.run(debug=True, host='127.0.0.1', port=5000, use_reloader=False)
+    host = '0.0.0.0'
+    port = 5000
+    if WAITRESS_AVAILABLE:
+        print("📦 Serving with Waitress WSGI server")
+        serve(app, host=host, port=port)
+    else:
+        print("⚠️ Waitress is not installed; using Flask development server instead")
+        app.run(host=host, port=port, debug=False, use_reloader=False)
